@@ -29,6 +29,15 @@ float Player::getPos() const {
     return m_shape.getPosition().y;
 }
 
+void Player::reset() {
+    m_shape.setPosition(sf::Vector2f(300, 300));
+    flap();
+}
+
+sf::FloatRect Player::getBounds() const {
+    return m_shape.getGlobalBounds();
+}
+
 
 
 

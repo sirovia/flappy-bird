@@ -23,6 +23,8 @@ public:
 
     void reset();
 
+    bool intersects(sf::FloatRect rect) const;
+
     static float randY(float windowHeight, float gapHeight, float minMargin = 100.f);
 
 };

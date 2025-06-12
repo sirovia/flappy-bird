@@ -16,6 +16,8 @@ int main() {
 
     sf::Clock clock;
 
+    bool active = false;
+
     while (window.isOpen()) {
 
         while (const std::optional event = window.pollEvent()) {
@@ -27,6 +29,11 @@ int main() {
                     window.close();
                 }
                 if (keyPressed->scancode == sf::Keyboard::Scancode::Space) {
+                    if (!active) {
+                        active = true;
+                        player.reset();
+                        pipe.reset();
+                    }
                     player.flap();
                 }
             }
@@ -34,8 +41,22 @@ int main() {
 
         sf::Time elapsed = clock.restart();
 
+        if (!active) elapsed = sf::Time::Zero;
+
         player.update(elapsed.asSeconds());
         pipe.update(elapsed.asSeconds());
+
+        if (pipe.intersects(player.getBounds())) {
+            active = false;
+        }
+
+        if (player.getPos() >= WINDOW_HEIGHT - 20.f) {
+            active = false;
+        }
+
+        if (player.getPos() <= 20.f) {
+            active = false;
+        }
 
         //render
         window.clear(sf::Color::Cyan);

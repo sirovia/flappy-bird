@@ -37,6 +37,11 @@ void Pipe::reset() {
     lowerPipe.setPosition({800.f, position + 100.f});
 }
 
+bool Pipe::intersects(const sf::FloatRect rect) const {
+    return (upperPipe.getGlobalBounds().findIntersection(rect) != std::nullopt ||
+        lowerPipe.getGlobalBounds().findIntersection(rect) != std::nullopt);
+}
+
 float Pipe::randY(const float windowHeight, const float gapHeight, const float minMargin) {
     static std::mt19937 rng(std::random_device{}());
     std::uniform_real_distribution<float> dist(minMargin, windowHeight - gapHeight - minMargin);

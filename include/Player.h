@@ -25,6 +25,9 @@ public:
     void draw(sf::RenderWindow &window) const;
     void update(const float &dt);
     float getPos() const;
+    void reset();
+
+    sf::FloatRect getBounds() const;
 };
 
 
