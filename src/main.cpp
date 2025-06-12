@@ -1,13 +1,18 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+
+#include "../include/Constants.h"
 #include "../include/Player.h"
+#include "../include/Pipe.h"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "Flappy Bird");
+    sf::RenderWindow window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "Flappy Bird");
 
     window.setKeyRepeatEnabled(false);
 
     Player player;
+
+    Pipe pipe;
 
     sf::Clock clock;
 
@@ -30,11 +35,13 @@ int main() {
         sf::Time elapsed = clock.restart();
 
         player.update(elapsed.asSeconds());
+        pipe.update(elapsed.asSeconds());
 
         //render
         window.clear(sf::Color::Cyan);
 
         player.draw(window);
+        pipe.draw(window);
 
         window.display();
     }

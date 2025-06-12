@@ -4,7 +4,7 @@
 
 #include "../include/Player.h"
 
-Player::Player() : m_shape(20.f), y(0.f), verticalSpeed(0.f) {
+Player::Player() : m_shape(20.f), y(0.f), verticalSpeed(flapS) {
     m_shape.setFillColor(sf::Color::Yellow);
     m_shape.setOrigin({20.f ,20.f});
     m_shape.setPosition(sf::Vector2f(300, 300));
@@ -16,7 +16,7 @@ void Player::flap() {
     verticalSpeed = flapS;
 }
 
-void Player::update(const float dt) {
+void Player::update(const float &dt) {
     verticalSpeed += gravity * dt;
     m_shape.move({0.f, verticalSpeed * dt});
 }
