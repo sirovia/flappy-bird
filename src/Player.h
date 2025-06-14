@@ -28,6 +28,8 @@ public:
     void reset();
 
     sf::FloatRect getBounds() const;
+
+    unsigned int points = 0;
 };
 
 

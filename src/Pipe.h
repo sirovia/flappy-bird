@@ -12,6 +12,7 @@
 class Pipe {
     sf::RectangleShape upperPipe;
     sf::RectangleShape lowerPipe;
+    mutable sf::RectangleShape m_shape;
     float position;
     float speed;
 public:
@@ -23,7 +24,9 @@ public:
 
     void reset();
 
-    bool intersects(sf::FloatRect rect) const;
+    bool intersects(const sf::FloatRect& rect) const;
+
+    bool passed(const sf::FloatRect& rect);
 
     static float randY(float windowHeight, float gapHeight, float minMargin = 100.f);
 

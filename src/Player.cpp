@@ -2,7 +2,7 @@
 // Created by alimu on 6/10/2025.
 //
 
-#include "../include/Player.h"
+#include "Player.h"
 
 Player::Player() : m_shape(20.f), y(0.f), verticalSpeed(flapS) {
     m_shape.setFillColor(sf::Color::Yellow);
@@ -31,6 +31,7 @@ float Player::getPos() const {
 
 void Player::reset() {
     m_shape.setPosition(sf::Vector2f(300, 300));
+    points = 0;
     flap();
 }
 
