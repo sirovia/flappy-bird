@@ -7,7 +7,8 @@
 #include "Pipe.h"
 #include "Player.h"
 #include <SFML/Graphics.hpp>
-#include "UI.h"
+
+#include "Scene.h"
 
 inline constexpr unsigned int WINDOW_WIDTH = 800;
 inline constexpr unsigned int WINDOW_HEIGHT = 600;
@@ -20,16 +21,16 @@ public:
 
 private:
     void handleEvents();
-    void update(float& dt);
+    void update(float& dt) const;
     void render();
 
     sf::RenderWindow window;
-    sf::Clock clock;
-    Player player;
-    std::vector<Pipe> pipes;
-    float pipeSpawnTimer = 2.f;
+
     bool active = false;
-    UI ui;
+
+    std::unique_ptr<Scene> currentScene;
+    void switchToMenu();
+    void switchToGame();
 };
 
 

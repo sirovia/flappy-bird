@@ -4,16 +4,18 @@
 
 #include "Game.h"
 
+#include "GameScene.h"
+#include "MenuScene.h"
+
 Game::Game()
     : window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "Flappy Bird"){
     window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);
-
-    pipes.reserve(4);
-    pipes.emplace_back();
+    switchToMenu();
 }
 
 void Game::run() {
+    sf::Clock clock;
     while (window.isOpen()) {
         handleEvents();
 
@@ -32,53 +34,34 @@ void Game::handleEvents() {
         }
         else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
             if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
-                window.close();
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Space) {
-                if (!active) {
-                    active = true;
-                    player.reset();
-                    pipes[0].reset();
-                }
-                player.flap();
+                switchToMenu();
             }
         }
+        currentScene->handleEvent(event);
     }
 }
 
-void Game::update(float& dt) {
-    if (!active)
-        dt = 0.f;
-    player.update(dt);
-    for (Pipe& pipe : pipes) {
-        pipe.update(dt);
-        if (pipe.intersects(player.getBounds())) {
-            active = false;
-        }
-
-        if (pipe.passed(player.getBounds())) {
-            player.points ++;
-        }
-    }
-    if (player.getPos() >= WINDOW_HEIGHT - 20.f) {
-        active = false;
-    }
-
-    if (player.getPos() <= 20.f) {
-        active = false;
-    }
+void Game::update(float& dt) const {
+    currentScene->update(dt);
 }
 
 void Game::render() {
     window.clear(sf::Color::Cyan);
 
-    player.draw(window);
-    for (Pipe& pipe : pipes) {
-        pipe.draw(window);
-    }
-    ui.showScore(window, player.points);
-    if (!active)
-        ui.showMessage(window, "Press SPACE to start");
+    currentScene->render(window);
+
     window.display();
+}
+
+void Game::switchToGame() {
+    currentScene = std::make_unique<GameScene>(window, [&]() {
+        switchToMenu();
+    });
+}
+
+void Game::switchToMenu() {
+    currentScene = std::make_unique<MenuScene>(window, [&]() {
+        switchToGame();
+    });
 }
 
